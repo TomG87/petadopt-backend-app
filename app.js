@@ -8,7 +8,9 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-connectDB();
+connectDB().catch((err) => {
+  console.error("Error during DB connection:", err);
+});
 
 const PORT = process.env.PORT || 3003;
 app.listen(PORT, () => {
