@@ -40,4 +40,21 @@ const getAllPets = async (req, res) => {
   }
 };
 
-module.exports = { addPet, getAllPets };
+const getPetById = async (req, res) => {
+  try {
+    const { petId } = req.params;
+    const userId = req.user.id;
+    const pet = await Pet.findOne({ _id: petId, user: userId }).populate(
+      "user"
+    );
+    if (!pet) {
+      return res.status(404).json({ message: "Pet not found" });
+    }
+    res.status(200).json(pet);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to retrieve Pet" });
+  }
+};
+
+module.exports = { addPet, getAllPets, getPetById };
