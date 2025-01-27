@@ -1,5 +1,5 @@
 const Pet = require("../models/petModel");
-const User = required("../models/userModel");
+const User = require("../models/userModel");
 
 const addPet = async (req, res) => {
   try {
@@ -81,4 +81,6 @@ const deletePet = async (req, res) => {
     });
   }
 };
-module.exports = { addPet, getAllPets, getPetById, deletePet };
+
+const updatePet = async (req, res) => {};
+module.exports = { addPet, getAllPets, getPetById, deletePet, updatePet };
