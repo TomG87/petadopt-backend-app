@@ -26,4 +26,16 @@ const addUser = async (req, res) => {
   }
 };
 
-module.exports = { addUser };
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    if (!users || users.length === 0) {
+      return res.status(404).json({ error: "No users found" });
+    }
+    res.status(200).json(users);
+  } catch (err) {
+    console.error("Error fetching users:", err.message);
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
+};
+module.exports = { addUser, getAllUsers };
