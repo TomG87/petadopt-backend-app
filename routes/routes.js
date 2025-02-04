@@ -19,6 +19,14 @@ const {
 
 router.post("/users", addUser);
 router.get("/users", getAllUsers);
-router.post("/users", loginUSer);
+router.post("/users/login", loginUser);
 router.delete("/users/:userId", deleteUser);
 router.put("/users/:userId", updateUser);
+
+router.post("/pets", addPet);
+router.get("/pets", getAllPets);
+router.get("/pets/:userId]", getPetById);
+router.delete("/pets/:petId", deletePet);
+router.put("/pets/:userId", updatePet);
+
+module.exports = router;
