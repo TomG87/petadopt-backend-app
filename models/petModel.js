@@ -23,6 +23,10 @@ const petSchema = new mongoose.Schema({
   photos: {
     type: String,
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
