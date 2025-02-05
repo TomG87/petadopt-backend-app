@@ -82,5 +82,42 @@ const deletePet = async (req, res) => {
   }
 };
 
-const updatePet = async (req, res) => {};
+const updatePet = async (req, res) => {
+  try {
+    const { petId } = req.params;
+    const userId = req.user.id;
+
+    const pet = await Pet.findById(petId);
+    if (!pet) {
+      return res.status(404).json({ message: "Pet not found" });
+    }
+
+    if (pet.owner.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to update this pet" });
+    }
+
+    const { name, breed, age, size, description, photos } = req.body;
+
+    if (name) pet.name = name;
+    if (breed) pet.breed = breed;
+    if (age) pet.age = age;
+    if (size) pet.size = size;
+    if (description) pet.description = description;
+    if (photos) pet.photos = photos;
+
+    const updatedPet = await pet.save();
+
+    res
+      .status(200)
+      .json({
+        message: "Pet information updated successfully",
+        pet: updatedPet,
+      });
+  } catch (error) {
+    console.error("Error updating pet information", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 module.exports = { addPet, getAllPets, getPetById, deletePet, updatePet };
