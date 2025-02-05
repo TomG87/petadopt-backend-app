@@ -10,6 +10,7 @@ const addPet = async (req, res) => {
       size: req.body.size,
       description: req.body.description,
       photos: req.body.photos,
+      user: req.user.id,
     });
 
     const savedPet = await newPet.save();
@@ -109,12 +110,10 @@ const updatePet = async (req, res) => {
 
     const updatedPet = await pet.save();
 
-    res
-      .status(200)
-      .json({
-        message: "Pet information updated successfully",
-        pet: updatedPet,
-      });
+    res.status(200).json({
+      message: "Pet information updated successfully",
+      pet: updatedPet,
+    });
   } catch (error) {
     console.error("Error updating pet information", error);
     res.status(500).json({ message: "Internal server error" });
