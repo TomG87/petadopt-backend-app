@@ -3,13 +3,19 @@ const User = require("../models/userModel");
 
 const addPet = async (req, res) => {
   try {
+    const { name, breed, age, size, description, photos } = req.body;
+
+    if (!name || !breed || !age || !size || !description) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     const newPet = new Pet({
-      name: req.body.name,
-      breed: req.body.breed,
-      age: req.body.age,
-      size: req.body.size,
-      description: req.body.description,
-      photos: req.body.photos,
+      name,
+      breed,
+      age,
+      size,
+      description,
+      photos,
       user: req.user.id,
     });
 

@@ -10,7 +10,7 @@ const petSchema = new mongoose.Schema({
     required: true,
   },
   age: {
-    type: String,
+    type: Number,
     required: true,
   },
   size: {
@@ -19,6 +19,7 @@ const petSchema = new mongoose.Schema({
   },
   description: {
     type: String,
+    required: true,
   },
   photos: {
     type: String,
