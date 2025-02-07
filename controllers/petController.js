@@ -93,7 +93,7 @@ const updatePet = async (req, res) => {
       return res.status(404).json({ message: "Pet not found" });
     }
 
-    if (pet.owner.toString() !== userId) {
+    if (pet.user.toString() !== userId) {
       return res
         .status(403)
         .json({ message: "You are not authorized to update this pet" });
