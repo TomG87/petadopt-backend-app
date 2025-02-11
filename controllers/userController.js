@@ -9,10 +9,10 @@ const addUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      role: req.body.role,
+      name,
+      email,
+      password: hashedPassword,
+      role,
     });
 
     const savedUser = await newUser.save();
