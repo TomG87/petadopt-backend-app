@@ -93,27 +93,22 @@ const updatePet = async (req, res) => {
     const { petId } = req.params;
     const userId = req.user.id;
 
-    const pet = await Pet.findById(petId);
-    if (!pet) {
-      return res.status(404).json({ message: "Pet not found" });
+    const updates = Object.keys(req.body);
+    if (updates.length === 0) {
+      return res.status(400).json({ message: "No updates provided" });
     }
 
-    if (pet.user.toString() !== userId) {
+    const updatedPet = await Pet.findOneAndUpdate(
+      { _id: petId, user: userId },
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedPet) {
       return res
-        .status(403)
-        .json({ message: "You are not authorized to update this pet" });
+        .status(404)
+        .json({ message: "Pet not found or not authorized to update" });
     }
-
-    const { name, breed, age, size, description, photos } = req.body;
-
-    if (name) pet.name = name;
-    if (breed) pet.breed = breed;
-    if (age) pet.age = age;
-    if (size) pet.size = size;
-    if (description) pet.description = description;
-    if (photos) pet.photos = photos;
-
-    const updatedPet = await pet.save();
 
     res.status(200).json({
       message: "Pet information updated successfully",
