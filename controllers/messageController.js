@@ -19,4 +19,35 @@ const createMessageThread = async (req, res) => {
   }
 };
 
-module.exports = { createMessageThread };
+const sendMessage = async (req, res) => {
+  const { threadId } = req.params;
+  const { userId, content } = req.body;
+
+  try {
+    if (!userId || !content) {
+      return res
+        .status(400)
+        .json({ error: "User ID and content are required" });
+    }
+    const thread = await Message.findById(threadId);
+    if (!thread) {
+      return res.status(404).json({ error: "Message thread not found" });
+    }
+
+    const newMessage = {
+      sender: userId,
+      content,
+      timestamp: new Date(),
+    };
+
+    thread.messages.push(newMessage);
+    thread.lastMessage = content;
+    await thread.save();
+
+    res.status(201).json(newMessage);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to send message" });
+  }
+};
+
+module.exports = { createMessageThread, sendMessage };
