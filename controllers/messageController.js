@@ -50,4 +50,37 @@ const sendMessage = async (req, res) => {
   }
 };
 
-module.exports = { createMessageThread, sendMessage };
+const deleteMessage = async (req, res) => {
+  const { threadId, messageId } = req.params;
+  const { userId } = req.body; // Only needed if enforcing ownership
+
+  try {
+    if (!threadId || !messageId || !userId) {
+      return res
+        .status(400)
+        .json({ error: "Thread, Message, and User ID are required" });
+    }
+
+    const thread = await Message.findById(threadId);
+    if (!thread) {
+      return res.status(404).json({ error: "Message thread not found" });
+    }
+
+    if (message.sender.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized to delete this message" });
+    }
+
+    await Message.findByIdAndUpdate(threadId, {
+      $pull: { messages: { _id: messageId } },
+    });
+
+    res.status(204).send();
+  } catch (err) {
+    console.error("Error deleting message:", err);
+    res.status(500).json({ error: "There was an error deleting the message" });
+  }
+};
+
+module.exports = { createMessageThread, sendMessage, deleteMessage };
