@@ -52,7 +52,7 @@ const sendMessage = async (req, res) => {
 
 const deleteMessage = async (req, res) => {
   const { threadId, messageId } = req.params;
-  const { userId } = req.body; // Only needed if enforcing ownership
+  const { userId } = req.body;
 
   try {
     if (!threadId || !messageId || !userId) {
@@ -66,6 +66,7 @@ const deleteMessage = async (req, res) => {
       return res.status(404).json({ error: "Message thread not found" });
     }
 
+    const message = thread.messages.id(messageId);
     if (message.sender.toString() !== userId) {
       return res
         .status(403)
