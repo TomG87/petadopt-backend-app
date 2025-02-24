@@ -95,7 +95,7 @@ const loginUser = async ( req, res ) => {
         if (name) user.name = name;
         if (email) user.email = email;
         if (password) {
-          const saleRounds = 10;
+          const saltRounds = 10;
           user.password = await bcrypt.hash(password, saltRounds);
         }
 
