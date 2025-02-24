@@ -50,6 +50,7 @@ const getPetById = async (req, res) => {
   try {
     const { petId } = req.params;
     const userId = req.user.id;
+
     const pet = await Pet.findOne({ _id: petId, user: userId }).populate(
       "user"
     );
@@ -60,6 +61,17 @@ const getPetById = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to retrieve Pet", err });
+  }
+};
+
+const getPetsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const pets = await Pet.find({ user: userId }).populate("user");
+    res.status(200).json(pets);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to retreive pets" });
   }
 };
 
@@ -119,4 +131,11 @@ const updatePet = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-module.exports = { addPet, getAllPets, getPetById, deletePet, updatePet };
+module.exports = {
+  addPet,
+  getAllPets,
+  getPetById,
+  deletePet,
+  updatePet,
+  getPetsByUserId,
+};

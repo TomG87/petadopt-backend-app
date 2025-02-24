@@ -22,6 +22,7 @@ router.get("/users", getAllUsers);
 router.post("/users/login", loginUser);
 router.delete("/users/:userId", deleteUser);
 router.put("/users/:userId", updateUser);
+router.get("/users/:userId/pets", getPetsByUserId);
 
 router.post("/pets", addPet);
 router.get("/pets", getAllPets);
