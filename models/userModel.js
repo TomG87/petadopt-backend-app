@@ -16,7 +16,7 @@ const userModel = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["adopter, shelter"],
+    enum: ["adopter", "shelter"],
     required: true,
   },
   createdAt: { type: Date, default: Date.now },
