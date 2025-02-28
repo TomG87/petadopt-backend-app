@@ -45,18 +45,18 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const loginUser = async ( req, res ) => {
+const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body
+    const { email, password } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({"User not found"});
+      return res.status(404).json({ message: "User not found" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({message: "Invalid credentials"});
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     res.status(200).json({ message: "Login Successful", user });
@@ -65,46 +65,48 @@ const loginUser = async ( req, res ) => {
     res.status(500).json({ message: "Error logging in", error: error.message });
   }
 };
-  const deleteUser = async (req, res) => {
-    try {
-      const { userId } = req.params;
-  
-      const user = await User.findById(userId); 
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      await User.findByIdAndDelete(userId);
-  
-      res.status(200).json({ message: "User deleted successfully" });
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      res.status(500).json({ message: "Internal server error" });
+const deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  };
 
-  const updateUser = async (req, res ) => {
-    try {
-      const {userId } = req.params;
-      const {name, email, password } = req.body;
+    await User.findByIdAndDelete(userId);
 
-      const user = await User.findById(userId);
-      if(!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-        if (name) user.name = name;
-        if (email) user.email = email;
-        if (password) {
-          const saltRounds = 10;
-          user.password = await bcrypt.hash(password, saltRounds);
-        }
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-        const updateUser = await user.save();
-        res.status(200).json({ message: "User updated successfully", user: updatedUser })
-      } catch (error) {
-        console.error("Error updating user:", error);
-        res.status(500).json({ message: "Interal server error" })
-      }
-    };
-  
-  module.exports = { addUser, getAllUsers, loginUser, deleteUser, updateUser };
+const updateUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { name, email, password } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) {
+      const saltRounds = 10;
+      user.password = await bcrypt.hash(password, saltRounds);
+    }
+
+    const updateUser = await user.save();
+    res
+      .status(200)
+      .json({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { addUser, getAllUsers, loginUser, deleteUser, updateUser };

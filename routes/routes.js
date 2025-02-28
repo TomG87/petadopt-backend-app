@@ -26,8 +26,8 @@ router.get("/users/:userId/pets", getPetsByUserId);
 
 router.post("/pets", addPet);
 router.get("/pets", getAllPets);
-router.get("/pets/:petId]", getPetById);
+router.get("/pets/:petId", getPetById);
 router.delete("/pets/:petId", deletePet);
-router.put("/pets/:userId", updatePet);
+router.put("/pets/:petId", updatePet);
 
 module.exports = router;

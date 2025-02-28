@@ -71,7 +71,7 @@ const getPetsByUserId = async (req, res) => {
     res.status(200).json(pets);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to retreive pets" });
+    res.status(500).json({ message: "Failed to retrieve pets" });
   }
 };
 
