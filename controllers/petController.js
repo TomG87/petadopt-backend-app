@@ -67,6 +67,13 @@ const getPetById = async (req, res) => {
 const getPetsByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
+    const authenticatedUserId = req.userId;
+    if (userId !== authenticatedUserId) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to access these pets" });
+    }
+
     const pets = await Pet.find({ user: userId }).populate("user");
     res.status(200).json(pets);
   } catch (err) {
