@@ -87,7 +87,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updatedUser = async (req, res) => {
   try {
     const { userId } = req.params;
     const { name, email, password } = req.body;
@@ -103,7 +103,7 @@ const updateUser = async (req, res) => {
       user.password = await bcrypt.hash(password, saltRounds);
     }
 
-    const updateUser = await user.save();
+    const updatedUser = await user.save();
     res
       .status(200)
       .json({ message: "User updated successfully", user: updatedUser });
@@ -113,4 +113,4 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { addUser, getAllUsers, loginUser, deleteUser, updateUser };
+module.exports = { addUser, getAllUsers, loginUser, deleteUser, updatedUser };
