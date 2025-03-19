@@ -14,8 +14,10 @@ const createMessageThread = async (req, res) => {
     });
 
     res.status(201).json(newThread);
-  } catch {
-    res.status(500).json({ error: "Failed to create message thread" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Failed to create message thread", details: err.message });
   }
 };
 
@@ -46,7 +48,10 @@ const sendMessage = async (req, res) => {
 
     res.status(201).json(newMessage);
   } catch (err) {
-    res.status(500).json({ error: "Failed to send message" });
+    console.error("Error sending message:".err);
+    res
+      .status(500)
+      .json({ error: "Failed to send message", details: err.message });
   }
 };
 
@@ -80,7 +85,12 @@ const deleteMessage = async (req, res) => {
     res.status(204).send();
   } catch (err) {
     console.error("Error deleting message:", err);
-    res.status(500).json({ error: "There was an error deleting the message" });
+    res
+      .status(500)
+      .json({
+        error: "There was an error deleting the message",
+        details: err.message,
+      });
   }
 };
 
