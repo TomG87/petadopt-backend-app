@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
 const connectDB = require("./db");
-const routes = require("./routes");
+const routes = require("./routes/routes");
+const authenticate = require("./middleware/authenticate");
 
 app.use(express.json());
-app.use("/api", routes);
+app.use("/api", authenticate, routes);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
