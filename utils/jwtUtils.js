@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const jwt = require("jsonwebtoken");
 const secretKey = process.env.SECRET_KEY;
 
 const generateToken = (userId) => {
@@ -14,6 +14,10 @@ const verifyToken = (token) => {
   } catch (err) {
     console.error("Token verification failed:", err.message);
     return null;
+  }
+
+  if (!process.env.SECRET_KEY) {
+    throw new Error("SECRET_KEY is missing in .env file");
   }
 };
 

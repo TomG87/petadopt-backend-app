@@ -1,19 +1,24 @@
 const { verifyToken } = require("../utils/jwtUtils");
 
-const authenticate = (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+const authenticate = async (req, res, next) => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
 
-  if (!token) {
-    return res.status(401).json({ error: "Access denied. No token provided." });
+    if (!token) {
+      return res.status(401).json({ error: "Authorization token required" });
+    }
+
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+
+    req.userId = decoded.userId;
+    next();
+  } catch (err) {
+    console.error("Authentication error:", err);
+    return res.status(500).json({ error: "Authentication failed" });
   }
-
-  const decoded = verifyToken(token);
-  if (!decoded) {
-    return res.status(401).json({ error: "Invalid or expired token" });
-  }
-
-  req.userId = decoded.userId;
-  next();
 };
 
 module.exports = authenticate;

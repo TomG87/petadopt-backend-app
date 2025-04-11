@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const authenticate = require("./middleware/authenticate");
+const authenticate = require("../middleware/authenticate");
 
 const {
   addUser,
   getAllUsers,
   loginUser,
   deleteUser,
-  updateUser,
-} = require("./controllers/userController");
+  updatedUser,
+} = require("../controllers/userController");
 
 const {
   addPet,
@@ -17,19 +17,19 @@ const {
   deletePet,
   updatePet,
   getPetsByUserId,
-} = require("./controllers/petController");
+} = require("../controllers/petController");
 
 const {
   createMessageThread,
   sendMessage,
   deleteMessage,
-} = require("./controllers/messageController");
+} = require("../controllers/messageController");
 
 router.post("/users", addUser);
 router.get("/users", authenticate, getAllUsers);
 router.post("/users/login", loginUser);
 router.delete("/users/:userId", authenticate, deleteUser);
-router.put("/users/:userId", authenticate, updateUser);
+router.put("/users/:userId", authenticate, updatedUser);
 router.get("/users/:userId/pets", authenticate, getPetsByUserId);
 
 router.post("/pets", authenticate, addPet);
